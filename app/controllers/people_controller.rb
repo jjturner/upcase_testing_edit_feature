@@ -1,4 +1,8 @@
 class PeopleController < ApplicationController
+  def index
+    @people = Person.all
+  end
+
   def new
     @person = Person.new
   end
@@ -12,6 +16,19 @@ class PeopleController < ApplicationController
     end
   end
 
+  def edit
+    @person = Person.find(params[:id])
+  end
+
+  def update
+    @person = Person.find(params[:id])
+    if @person.update(person_params)
+      redirect_to @person, notice: "Person updated."
+    else
+      render :edit
+    end
+  end
+
   def show
     @person = Person.find(params[:id])
   end
@@ -21,4 +38,9 @@ class PeopleController < ApplicationController
   def person_attributes
     params.require(:person).permit(:first_name)
   end
+
+  private
+    def person_params
+      params.require(:person).permit(:first_name)
+    end
 end

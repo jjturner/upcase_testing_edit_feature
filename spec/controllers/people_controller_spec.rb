@@ -28,4 +28,23 @@ describe PeopleController do
       end
     end
   end
+
+  describe "#edit" do
+    context "when update is valid" do
+      let(:person) { Person.create(first_name: "Hooper") }
+
+      it "redirects to #show" do
+
+        allow(Person).to receive(:find).
+          with(person.id).
+          and_return(person)
+        allow(person).to receive(:update).
+          and_return(true)
+
+        patch :update, person: { first_name: "Hooper" }
+
+        expect(response).to redirect_to person_path(person)
+      end
+    end
+  end
 end
