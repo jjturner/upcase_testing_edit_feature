@@ -36,12 +36,12 @@ describe PeopleController do
       it "redirects to #show" do
 
         allow(Person).to receive(:find).
-          with(person.id).
+          with(person.id.to_s).
           and_return(person)
         allow(person).to receive(:update).
           and_return(true)
 
-        patch :update, person: { first_name: "Hooper" }
+        patch :update, { id: person.id, person: { first_nam: "Pooper" }}
 
         expect(response).to redirect_to person_path(person)
       end
