@@ -41,9 +41,25 @@ describe PeopleController do
         allow(person).to receive(:update).
           and_return(true)
 
-        patch :update, { id: person.id, person: { first_nam: "Pooper" }}
+        patch :update, { id: person.id, person: { first_name: "Pooper" }}
 
         expect(response).to redirect_to person_path(person)
+      end
+    end
+
+    context "when update is invalid" do
+      let(:person) { Person.create(first_name: "Hooper") }
+
+      it "renders #edit" do
+        allow(Person).to receive(:find).
+          with(person.id.to_s).
+          and_return(person)
+        allow(person).to receive(:update).
+          and_return(false)
+
+        patch :update, { id: person.id, person: { first_name: "anything" }}
+
+        expect(response).to render_template(:edit)
       end
     end
   end
