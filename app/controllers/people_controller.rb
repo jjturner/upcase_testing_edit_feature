@@ -8,7 +8,7 @@ class PeopleController < ApplicationController
   end
 
   def create
-    @person = Person.new(person_attributes)
+    @person = Person.new(person_params)
     if @person.save
       redirect_to @person, notice: "Person created."
     else
@@ -31,12 +31,6 @@ class PeopleController < ApplicationController
 
   def show
     @person = Person.find(params[:id])
-  end
-
-  private
-
-  def person_attributes
-    params.require(:person).permit(:first_name)
   end
 
   private
